@@ -1,25 +1,18 @@
 const express = require('express');
 const dotenv = require('dotenv').config({ path: './config/dotenv.env' });
+const colors = require('colors');
 const cors = require('cors');
 const morgan = require('morgan');
-const mongoose = require('mongoose');
+const connectDB = require('./db/connectdb');
 
 const app = express();
 
 app.set('view engine', 'ejs');
 
-// DEFINE DATABASE-URL
-const DBURL = process.env.MONGODBURI;
-
-// CONNECT DB
-const db = mongoose
-  .connect(DBURL)
-  .then(() => {
-    console.log('Database Connected Successfully!');
-  })
-  .catch((error) => {
-    console.log('Database connection error: ', error);
-  });
+// DEFINE DB-URL
+const url = process.env.MONGODBURI;
+// CONNECT-DB
+connectDB(url);
 
 app.use(cors());
 app.use(morgan('dev'));
